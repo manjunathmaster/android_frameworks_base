@@ -62,7 +62,6 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.os.DropBoxManager;
 import android.os.Environment;
-import android.os.GraphicsEnvironment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.LocaleList;
@@ -5049,7 +5048,7 @@ public final class ActivityThread {
         WindowManagerGlobal.getInstance().trimMemory(level);
     }
 
-    private void setupGraphicsSupport(Context context, File cacheDir) {
+    private void setupGraphicsSupport(LoadedApk info, File cacheDir) {
         if (Process.isIsolated()) {
             // Isolated processes aren't going to do UI.
             return;
@@ -5062,7 +5061,6 @@ public final class ActivityThread {
             if (packages != null) {
                 ThreadedRenderer.setupDiskCache(cacheDir);
                 RenderScriptCacheDir.setupDiskCache(cacheDir);
-                GraphicsEnvironment.setupGraphicsEnvironment(context);
             }
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
@@ -5357,7 +5355,7 @@ public final class ActivityThread {
             final Context deviceContext = appContext.createDeviceProtectedStorageContext();
             final File codeCacheDir = deviceContext.getCodeCacheDir();
             if (codeCacheDir != null) {
-                setupGraphicsSupport(appContext, codeCacheDir);
+                setupGraphicsSupport(data.info, codeCacheDir);
             } else {
                 Log.e(TAG, "Unable to setupGraphicsSupport due to missing code-cache directory");
             }

@@ -191,12 +191,6 @@ static jint getPlatformLowPowerStats(JNIEnv* env, jobject /* clazz */, jobject o
         goto error;
     }
 
-    if (! (gPowerModule->get_platform_low_power_stats && gPowerModule->get_number_of_platform_modes
-       && gPowerModule->get_voter_list)) {
-        ALOGE("%s: Missing API", POWER_HARDWARE_MODULE_ID);
-        goto error;
-    }
-
     if (gPowerModule->get_number_of_platform_modes) {
         num_modes = gPowerModule->get_number_of_platform_modes(gPowerModule);
     }
